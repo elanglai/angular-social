@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PostsService } from '../../services/posts.service';
+import { UiService } from '../../../ui/services/ui.service';
+
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -12,10 +14,10 @@ import { map } from 'rxjs/operators';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private route:ActivatedRoute, private postsService: PostsService) { }
+  constructor(private route:ActivatedRoute, private uiService: UiService) { }
 
-  protected profile = { id: null};
-  protected $profile = null;
+  public profile = { id: null};
+  public $profile = null;
 
   ngOnInit() {
     // // We must subscribe to the Observable.  The arrow function will get triggered on param change
@@ -32,7 +34,15 @@ export class ProfileComponent implements OnInit {
       //   .subscribe(result => this.profile = result);
 
       this.$profile = this.route.data
-        .pipe(map (data => data['profile']));
+        .pipe(map (data => data['profile']), map(profile => this.setMetaData(profile)));
     }
 
+    setMetaData(profile) {
+      const { fullName, posts } = profile;
+      const description = `${fullName} posted ${posts.length} posts`;
+      const title = `Possts by ${fullName}`;
+      this.uiService.setMetaData( { description, title} );
+      return profile;
+    }
+  
 }
