@@ -6,7 +6,7 @@
     "start": "ts-node ./server",
     "build": "npm run build:browser && npm run build:server",
     "build:browser": "ng build --prod",
-    "build:server": "ng run angular-social:server",
+    "build:server": "ng run angular-social:server:production",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
